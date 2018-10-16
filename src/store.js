@@ -17,7 +17,6 @@ export const toggleTask = (index) => {
 const todosReducer = (state = initialState, action) => {
   switch (action.type) {
     case "TASK_TOGGLED":
-      console.log(state)
       return {
         ...state,
         todos: [
@@ -28,17 +27,16 @@ const todosReducer = (state = initialState, action) => {
           },
           ...state.todos.slice(action.payload + 1)
         ]
-      }
+      };
 
     default:
-      console.log(state)
       return state;
   }
 }
 
 const reducers = combineReducers({
-  todos: todosReducer
+  taskList: todosReducer,
 });
 
 
-export default createStore(reducers, initialState)
+export default createStore(reducers)

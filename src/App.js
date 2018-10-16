@@ -6,11 +6,10 @@ import {toggleTask} from './store'
 
 class App extends Component {
   render() {
-    console.log(this.props)
     return (
       <div>
         <ul>
-          {this.props.taskList.map(
+          {this.props.todos.map(
             (task, i) => <li onClick={() => {this.props.toggleTask(i)}} style={{ color: task.completed ? 'red' : 'black' }}>{task.name}</li>
           )}
         </ul>
@@ -21,7 +20,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    taskList: state.todos
+    ...state.taskList
   }
 }
 
