@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 
-import {toggleTask, addTask, editTask} from './store'
+import {toggleTask, addTask, editTask} from './actions'
 
 class App extends Component {
   state = {
@@ -67,4 +67,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, { toggleTask, addTask, editTask })(App);
 
-// export default connect(mapStateToProps)(App);
+// export default App;
