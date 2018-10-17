@@ -8,6 +8,8 @@ const initialState = {
   ]
 }
 
+const TASK_UPDATED = "TASK_UPDATED";
+
 // actions
 export const toggleTask = (index) => {
   return { type: "TASK_TOGGLED", payload: index }
@@ -15,6 +17,10 @@ export const toggleTask = (index) => {
 
 export const addTask = (task) => {
   return { type: "TASK_ADDED", payload: task }
+}
+
+export const editTask = (task, index) => {
+  return { type: TASK_UPDATED, payload: { task, index }}
 }
 
 // reducer
@@ -39,6 +45,20 @@ const todosReducer = (state = initialState, action) => {
         todos: [
           ...state.todos,
           { completed: false, name: action.payload }
+        ]
+      }
+
+    case TASK_UPDATED:
+      console.log(state, action)
+      return {
+        ...state,
+        todos: [
+          ...state.todos.slice(0, action.payload.index),
+          {
+            ...state.todos[action.payload.index],
+            name: action.payload.task
+          },
+          ...state.todos.slice(action.payload.index + 1)
         ]
       }
 

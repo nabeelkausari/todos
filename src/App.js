@@ -1,16 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 
-import {toggleTask, addTask} from './store'
+import {toggleTask, addTask, editTask} from './store'
 
 class App extends Component {
   state = {
-    newTask: ""
+    newTask: "",
+    edit: false,
+    updateIndex: null
   };
 
   setNewTask = (e) => {
     this.setState({ newTask: e.target.value })
+  }
+
+  setUpdateTask = (task, i) => {
+    this.setState({ newTask: task.name , edit: true, updateIndex: i })
   }
 
   addNewTask = () => {
@@ -18,16 +24,34 @@ class App extends Component {
     this.setState({ newTask: "" })
   }
 
+  editTask = () => {
+    const { newTask, updateIndex } = this.state;
+    this.props.editTask(newTask, updateIndex);
+    this.setState({ newTask: "", edit: false })
+  }
+
   render() {
     return (
       <div>
         <div>
           <input onChange={this.setNewTask} value={this.state.newTask} type="text"/>
-          <button onClick={this.addNewTask}>Add</button>
+          {!this.state.edit ? <button onClick={this.addNewTask}>Add</button>
+           : <button onClick={this.editTask}>Update</button>}
         </div>
         <ul>
           {this.props.todos.map(
-            (task, i) => <li key={i} onClick={() => {this.props.toggleTask(i)}} style={{ color: task.completed ? 'red' : 'black' }}>{task.name}</li>
+            (task, i) => (
+              <Fragment>
+                <li
+                  key={i}
+                  onClick={() => {this.props.toggleTask(i)}}
+                  style={{ color: task.completed ? 'red' : 'black' }}
+                >
+                {task.name}
+              </li>
+              <button onClick={() => this.setUpdateTask(task, i)}>Edit</button>
+              </Fragment>
+            )
           )}
         </ul>
       </div>
@@ -41,6 +65,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { toggleTask, addTask })(App);
+export default connect(mapStateToProps, { toggleTask, addTask, editTask })(App);
 
 // export default connect(mapStateToProps)(App);
