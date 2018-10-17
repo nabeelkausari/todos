@@ -8,10 +8,14 @@ const initialState = {
   ]
 }
 
-// action
+// actions
 export const toggleTask = (index) => {
   return { type: "TASK_TOGGLED", payload: index }
 };
+
+export const addTask = (task) => {
+  return { type: "TASK_ADDED", payload: task }
+}
 
 // reducer
 const todosReducer = (state = initialState, action) => {
@@ -28,6 +32,15 @@ const todosReducer = (state = initialState, action) => {
           ...state.todos.slice(action.payload + 1)
         ]
       };
+
+    case "TASK_ADDED":
+      return {
+        ...state,
+        todos: [
+          ...state.todos,
+          { completed: false, name: action.payload }
+        ]
+      }
 
     default:
       return state;
